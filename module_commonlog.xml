@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_commonlog" default="compile.module.commonlog">
+  <dirname property="module.commonlog.basedir" file="${ant.file.module_commonlog}"/>
+  
+  <property name="module.jdk.home.commonlog" value="${jdk.home.android_4.2.2_platform}"/>
+  <property name="module.jdk.bin.commonlog" value="${jdk.bin.android_4.2.2_platform}"/>
+  <property name="module.jdk.classpath.commonlog" value="jdk.classpath.android_4.2.2_platform"/>
+  
+  <property name="compiler.args.commonlog" value="${compiler.args}"/>
+  
+  <property name="commonlog.output.dir" value="${module.commonlog.basedir}/../../StartupNews/out/production/CommonLog"/>
+  <property name="commonlog.testoutput.dir" value="${module.commonlog.basedir}/../../StartupNews/out/test/CommonLog"/>
+  
+  <path id="commonlog.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="commonlog.module.production.classpath">
+    <path refid="${module.jdk.classpath.commonlog}"/>
+  </path>
+  
+  <path id="commonlog.runtime.production.module.classpath">
+    <pathelement location="${commonlog.output.dir}"/>
+  </path>
+  
+  <path id="commonlog.module.classpath">
+    <path refid="${module.jdk.classpath.commonlog}"/>
+    <pathelement location="${commonlog.output.dir}"/>
+  </path>
+  
+  <path id="commonlog.runtime.module.classpath">
+    <pathelement location="${commonlog.testoutput.dir}"/>
+    <pathelement location="${commonlog.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.commonlog">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.commonlog">
+    <patternset refid="excluded.from.module.commonlog"/>
+  </patternset>
+  
+  <path id="commonlog.module.sourcepath">
+    <dirset dir="${module.commonlog.basedir}">
+      <include name="src"/>
+      <include name="gen"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.commonlog" depends="compile.module.commonlog.production,compile.module.commonlog.tests" description="Compile module CommonLog"/>
+  
+  <target name="compile.module.commonlog.production" depends="register.custom.compilers" description="Compile module CommonLog; production classes">
+    <mkdir dir="${commonlog.output.dir}"/>
+    <javac2 destdir="${commonlog.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.commonlog}/javac">
+      <compilerarg line="${compiler.args.commonlog}"/>
+      <bootclasspath refid="commonlog.module.bootclasspath"/>
+      <classpath refid="commonlog.module.production.classpath"/>
+      <src refid="commonlog.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.commonlog"/>
+    </javac2>
+    
+    <copy todir="${commonlog.output.dir}">
+      <fileset dir="${module.commonlog.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.commonlog.basedir}/gen">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.commonlog.tests" depends="register.custom.compilers,compile.module.commonlog.production" description="compile module CommonLog; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.commonlog" description="cleanup module">
+    <delete dir="${commonlog.output.dir}"/>
+    <delete dir="${commonlog.testoutput.dir}"/>
+  </target>
+</project>
