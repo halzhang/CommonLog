@@ -8,12 +8,12 @@ import android.util.Log;
  * log
  * 
  * @author <a href="http://weibo.com/halzhang">Hal</a>
- * @version Dec 24, 2012 9:55:18 PM
+ * @version ec 24, 2012 9:55:18 PM
  */
 public class CDLog {
     public static final String LOG_TAG = CDLog.class.getSimpleName();
 
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
 
     private static final String LOG_PREFIX = "CDLOG_";
 
